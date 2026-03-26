@@ -21,11 +21,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Initialize Google Gemini Client (General-Purpose AI Advisor)
+# Initialize Google Gemini Client (Optional)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-genai.configure(api_key=GEMINI_API_KEY)
-model = genai.GenerativeModel('models/gemini-flash-latest', 
-    system_instruction="You are NailVital AI, a versatile and intelligent assistant. While you have expertise in nail health and dermatology, you are capable of answering any general-purpose questions from the user across any topic. Provide clear, concise, and helpful responses.")
+if GEMINI_API_KEY:
+    try:
+        genai.configure(api_key=GEMINI_API_KEY)
+        model = genai.GenerativeModel('models/gemini-flash-latest', 
+            system_instruction="You are NailVital AI, a versatile and intelligent assistant. While you have expertise in nail health and dermatology, you are capable of answering any general-purpose questions from the user across any topic. Provide clear, concise, and helpful responses.")
+        print("Google Gemini AI initialized successfully.")
+    except Exception as e:
+        print(f"Failed to initialize Gemini AI: {e}")
+        model = None
+else:
+    print("GEMINI_API_KEY not found. Gemini-specific features will be disabled.")
+    model = None
 
 # Initialize Groq Client for high-speed chat
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
