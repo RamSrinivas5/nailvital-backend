@@ -34,11 +34,19 @@ def send_otp(email: str, otp: str):
             body = f"Your verification code is: {otp}\n\nThis code expires in 10 minutes."
             msg.attach(MIMEText(body, 'plain'))
             
-            server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+            print(f"[OTP SERVICE] Attempting to send email to {email} via {SMTP_SERVER}...")
+            
+            # Force IPv4 to fix Render 'Network is unreachable' error
+            import socket
+            smtp_ip = socket.gethostbyname(SMTP_SERVER)
+            
+            server = smtplib.SMTP(smtp_ip, SMTP_PORT, timeout=10)
             server.starttls()
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
             server.send_message(msg)
             server.quit()
-            print(f"[OTP SERVICE] Email successfully sent to {email}")
+            print(f"[OTP SERVICE] ✅ Email successfully sent to {email}")
         except Exception as e:
-            print(f"[OTP SERVICE] Failed to send email: {str(e)}")
+            print(f"[OTP SERVICE] ❌ Failed to send email to {email}: {str(e)}")
+            import traceback
+            traceback.print_exc()
