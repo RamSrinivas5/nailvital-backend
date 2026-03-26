@@ -27,14 +27,26 @@ Render will automatically detect your `render.yaml` or you can set these manuall
 - **Start Command**: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 
 ## 4. Set Up a Database (Mandatory)
-Since you don't have a `DATABASE_URL` yet, you need to create a database on Render (it's free for 90 days and very easy):
+You have two great free options:
+
+### Option A: Render PostgreSQL (Easiest)
+*(Free for 90 days, then expires)*
 1.  **Go to Render Dashboard** > **New** > **PostgreSQL**.
 2.  **Name it**: `nailvital-db`.
 3.  Click **Create Database**.
-4.  Once created, scroll down to **Connections** and copy the **Internal Database URL** (or External if Internal doesn't work).
-5.  Go to your **Web Service** (nailvital-backend) > **Environment** tab.
-6.  Add a new environment variable:
-    - `DATABASE_URL`: (Paste the URL you just copied).
+4.  Copy the **Internal Database URL**.
+5.  Add it to your Web Service **Environment** as `DATABASE_URL`.
+
+### Option B: Supabase (Recommended - Permanent Free Tier)
+*(Better for long-term use)*
+1.  Go to [supabase.com](https://supabase.com) and create a free account.
+2.  Create a **New Project** named `NailVital`.
+3.  Set a **Database Password** (Save it!).
+4.  Once the project is ready, go to **Project Settings** > **Database**.
+5.  Look for **Connection string** > **URI**.
+6.  It will look like: `postgresql://postgres:[YOUR-PASSWORD]@db.xxxx.supabase.co:5432/postgres`
+7.  **Replace `[YOUR-PASSWORD]`** with the password you created.
+8.  Add this full URI to your Render Web Service **Environment** as `DATABASE_URL`.
 
 ## 5. Set Environment Variables
 In the Render dashboard, go to the **Environment** tab and add:

@@ -3,11 +3,16 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# SMTP Configuration (User to fill these)
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SENDER_EMAIL = "gummasrinivas8106@gmail.com"
-SENDER_PASSWORD = "yscv ojuc maby aqhi" # Use App Password, not main password
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+# SMTP Configuration (Injected from Environment Variables)
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+SENDER_EMAIL = os.getenv("SENDER_EMAIL", "gummasrinivas8106@gmail.com")
+SENDER_PASSWORD = os.getenv("SENDER_PASSWORD", "yscv ojuc maby aqhi") 
 
 def generate_otp():
     return "".join([str(random.randint(0, 9)) for _ in range(6)])

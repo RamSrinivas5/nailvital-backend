@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File
+from fastapi import FastAPI, Depends, HTTPException, status, UploadFile, File, BackgroundTasks
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from datetime import timedelta
@@ -173,7 +173,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 @app.post("/register", response_model=schemas.UserResponse)
-def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
+def register(user: schemas.UserCreate, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.email == user.email).first()
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -195,8 +195,8 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
     
-    # Send OTP
-    otp_service.send_otp(user.email, otp_code)
+    # Send OTP in background
+    background_tasks.add_task(otp_service.send_otp, user.email, otp_code)
     
     return new_user
 
@@ -279,7 +279,7 @@ def verify_otp(email: str, otp: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Invalid OTP")
 
 @app.post("/resend-otp")
-def resend_otp(email: str, db: Session = Depends(get_db)):
+def resend_otp(email: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -289,11 +289,11 @@ def resend_otp(email: str, db: Session = Depends(get_db)):
     user.is_verified = False
     db.commit()
     
-    otp_service.send_otp(email, new_otp)
+    background_tasks.add_task(otp_service.send_otp, email, new_otp)
     return {"message": "OTP resent"}
 
 @app.post("/forgot-password")
-def forgot_password(email: str, db: Session = Depends(get_db)):
+def forgot_password(email: str, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.email == email).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -302,7 +302,7 @@ def forgot_password(email: str, db: Session = Depends(get_db)):
     user.otp = otp
     db.commit()
     
-    otp_service.send_otp(email, otp)
+    background_tasks.add_task(otp_service.send_otp, email, otp)
     return {"message": "Reset OTP sent"}
 
 @app.post("/reset-password")
