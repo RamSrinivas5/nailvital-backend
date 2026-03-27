@@ -17,6 +17,6 @@ services:
 
   - type: web
     name: nailvital-landing
-    env: static
+    runtime: static
     buildCommand: ""
     staticPublishPath: landing
