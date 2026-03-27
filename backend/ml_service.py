@@ -9,12 +9,19 @@ from PIL import Image
 import os
 import io
 
-# Setup paths (Assuming backend runs from NailVital_AI_Backend folder)
+# Setup paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 AI_DIR = os.path.join(BASE_DIR, 'ml_models')
 TFLITE_MODEL_PATH = os.path.join(AI_DIR, 'nail_model_quantized.tflite')
 CLASS_NAMES_PATH = os.path.join(AI_DIR, 'class_names.txt')
 IMG_SIZE = (224, 224)
+
+print(f"--- DEBUG: BASE_DIR: {BASE_DIR}")
+print(f"--- DEBUG: CLASS_NAMES_PATH: {CLASS_NAMES_PATH}")
+if os.path.exists(AI_DIR):
+    print(f"--- DEBUG: Contents of {AI_DIR}: {os.listdir(AI_DIR)}")
+else:
+    print(f"--- DEBUG: AI_DIR NOT FOUND at {AI_DIR}")
 
 class MLService:
     def __init__(self):
