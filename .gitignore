@@ -29,9 +29,13 @@ frontend/app/src/main/res/raw/
 frontend/app/src/main/assets/
 *.apk
 
-# Training Data
+# Training Data and AI models
 ai_model_training/
 ml_models/
+
+# But allow essential production files in backend/ml_models
+!backend/ml_models/nail_model_quantized.tflite
+!backend/ml_models/class_names.txt
 __pycache__/
 venv/
 .env
