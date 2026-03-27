@@ -9,19 +9,30 @@ from PIL import Image
 import os
 import io
 
-# Setup paths
+# Setup paths - Robust resolution for Render/Local
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# 1. Try relative to the script
 AI_DIR = os.path.join(BASE_DIR, 'ml_models')
+
+# 2. Fallback: Try relative to CWD (important for Render rootDir)
+if not os.path.exists(AI_DIR):
+    AI_DIR = os.path.join(os.getcwd(), 'ml_models')
+
+# 3. Fallback: Try with 'backend' prefix (if root is repo root)
+if not os.path.exists(AI_DIR):
+    AI_DIR = os.path.join(os.getcwd(), 'backend', 'ml_models')
+
 TFLITE_MODEL_PATH = os.path.join(AI_DIR, 'nail_model_quantized.tflite')
 CLASS_NAMES_PATH = os.path.join(AI_DIR, 'class_names.txt')
 IMG_SIZE = (224, 224)
 
+print(f"--- DEBUG: CWD: {os.getcwd()}")
 print(f"--- DEBUG: BASE_DIR: {BASE_DIR}")
-print(f"--- DEBUG: CLASS_NAMES_PATH: {CLASS_NAMES_PATH}")
+print(f"--- DEBUG: RESOLVED AI_DIR: {AI_DIR}")
 if os.path.exists(AI_DIR):
     print(f"--- DEBUG: Contents of {AI_DIR}: {os.listdir(AI_DIR)}")
 else:
-    print(f"--- DEBUG: AI_DIR NOT FOUND at {AI_DIR}")
+    print(f"--- DEBUG: AI_DIR STILL NOT FOUND!")
 
 class MLService:
     def __init__(self):
