@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NailVital AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --mint: #00C9A7;
+  --mint-light: #E6FBF7;
+  --mint-dark: #009E84;
+  --deep: #0D1F2D;
+  --deep2: #162333;
+  --slate: #1E3448;
+  --muted: #7A94A8;
+  --muted2: #B0C4D0;
+  --white: #FFFFFF;
+  --off: #F4F8FB;
+  --border: rgba(0,201,167,0.18);
+  --border2: rgba(255,255,255,0.08);
+  --warn: #FF6B6B;
+  --gold: #FFB547;
+  --radius: 20px;
+  --radius-sm: 12px;
+  --shadow: 0 8px 40px rgba(0,201,167,0.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #0a0a0a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Phone shell */
+.phone {
+  width: 390px;
+  height: 780px;
+  background: var(--deep);
+  border-radius: 44px;
+  border: 1.5px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 40px 120px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+
+/* Screens */
+.screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0; left: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.screen.active { display: flex; flex-direction: column; }
+.screen::-webkit-scrollbar { display: none; }
+
+/* ─── SPLASH ─── */
+#splash {
+  background: var(--deep);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+}
+.splash-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 300px 300px at 50% 40%, rgba(0,201,167,0.18) 0%, transparent 70%);
+}
+.splash-ring {
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,201,167,0.2);
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  animation: ringPulse 3s ease-in-out infinite;
+}
+.splash-ring::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,201,167,0.35);
+}
+.splash-ring::after {
+  content: '';
+  position: absolute;
+  inset: 28px;
+  border-radius: 50%;
+  background: rgba(0,201,167,0.08);
+  border: 1px solid rgba(0,201,167,0.5);
+}
+@keyframes ringPulse {
+  0%,100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.04); opacity: 0.85; }
+}
+.splash-icon {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, var(--mint) 0%, #00A88E 100%);
+  border-radius: 22px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  position: relative; z-index: 2;
+  box-shadow: 0 12px 40px rgba(0,201,167,0.5);
+}
+.splash-logo {
+  margin-top: 32px;
+  font-family: 'Sora', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.5px;
+  position: relative; z-index: 1;
+}
+.splash-logo span { color: var(--mint); }
+.splash-tagline {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+  position: relative; z-index: 1;
+}
+.splash-loader {
+  margin-top: 60px;
+  width: 48px; height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative; z-index: 1;
+}
+.splash-loader::after {
+  content: '';
+  position: absolute;
+  left: -100%; top: 0; height: 100%;
+  width: 100%;
+  background: var(--mint);
+  border-radius: 2px;
+  animation: load 2s ease forwards;
+}
+@keyframes load { to { left: 0; } }
+
+/* ─── GETTING STARTED ─── */
+#getting {
+  background: var(--deep);
+  flex-direction: column;
+}
+.get-hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 32px 24px;
+  position: relative;
+}
+.get-illustration {
+  width: 220px; height: 220px;
+  position: relative;
+  margin-bottom: 40px;
+}
+.get-orb {
+  position: absolute;
+  border-radius: 50%;
+}
+.get-orb-1 {
+  inset: 0;
+  background: radial-gradient(circle at 40% 40%, rgba(0,201,167,0.15), transparent 70%);
+  border: 1px solid rgba(0,201,167,0.15);
+}
+.get-orb-2 {
+  inset: 30px;
+  background: rgba(0,201,167,0.06);
+  border: 1px solid rgba(0,201,167,0.25);
+}
+.get-nail {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 64px;
+  filter: drop-shadow(0 8px 24px rgba(0,201,167,0.4));
+}
+.get-dots {
+  display: flex; gap: 6px;
+  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+}
+.get-dot {
+  width: 6px; height: 6px; border-radius: 3px;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.3s;
+}
+.get-dot.active { width: 20px; background: var(--mint); }
+.get-slide-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--white);
+  text-align: center;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+}
+.get-slide-sub {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+}
+.get-actions {
+  padding: 24px 28px 40px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.get-skip {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 8px;
+}
+.get-skip:hover { color: var(--mint); }
+
+/* ─── BUTTONS ─── */
+.btn {
+  width: 100%;
+  padding: 17px 24px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.1px;
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary {
+  background: var(--mint);
+  color: var(--deep);
+}
+.btn-primary:hover { background: var(--mint-dark); box-shadow: 0 8px 24px rgba(0,201,167,0.35); }
+.btn-outline {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.btn-outline:hover { border-color: var(--mint); color: var(--mint); }
+.btn-ghost {
+  background: rgba(255,255,255,0.06);
+  color: var(--muted2);
+}
+.btn-danger {
+  background: rgba(255,107,107,0.12);
+  color: var(--warn);
+  border: 1px solid rgba(255,107,107,0.25);
+}
+
+/* ─── AUTH SCREENS ─── */
+.auth-screen {
+  background: var(--deep);
+  flex-direction: column;
+}
+.auth-header {
+  padding: 56px 28px 0;
+  display: flex; flex-direction: column;
+}
+.back-btn {
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  border: none;
+  color: var(--white);
+  font-size: 18px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 28px;
+  transition: all 0.2s;
+}
+.back-btn:hover { background: rgba(255,255,255,0.1); }
+.auth-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 28px; font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+.auth-sub {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.auth-body {
+  flex: 1;
+  padding: 32px 28px 0;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.auth-footer {
+  padding: 20px 28px 44px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+
+/* ─── FORM FIELDS ─── */
+.field {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.field label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.field-wrap {
+  position: relative;
+}
+.field input {
+  width: 100%;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.2s;
+}
+.field input::placeholder { color: rgba(255,255,255,0.25); }
+.field input:focus {
+  border-color: var(--mint);
+  background: rgba(0,201,167,0.05);
+  box-shadow: 0 0 0 3px rgba(0,201,167,0.1);
+}
+.field-icon {
+  position: absolute;
+  right: 16px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+}
+.field-icon:hover { color: var(--mint); }
+.field-error {
+  font-size: 12px;
+  color: var(--warn);
+  display: none;
+}
+.field.error input { border-color: var(--warn); }
+.field.error .field-error { display: block; }
+
+/* ─── DIVIDER ─── */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+/* ─── SOCIAL BTNS ─── */
+.social-row {
+  display: flex; gap: 10px;
+}
+.social-btn {
+  flex: 1;
+  padding: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-size: 18px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+.social-btn:hover { border-color: var(--mint); background: rgba(0,201,167,0.06); }
+
+/* ─── LINK TEXT ─── */
+.link-row {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+.link { color: var(--mint); cursor: pointer; font-weight: 500; }
+.link:hover { text-decoration: underline; }
+
+/* ─── OTP ─── */
+.otp-row {
+  display: flex; gap: 10px; justify-content: center;
+  margin: 8px 0;
+}
+.otp-input {
+  width: 52px; height: 60px;
+  text-align: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s;
+}
+.otp-input:focus {
+  border-color: var(--mint);
+  background: rgba(0,201,167,0.05);
+  box-shadow: 0 0 0 3px rgba(0,201,167,0.1);
+}
+.otp-input.filled { border-color: rgba(0,201,167,0.5); }
+.resend-row {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}
+.resend-timer { color: var(--mint); font-weight: 500; }
+
+/* ─── HOME / DASHBOARD ─── */
+#home {
+  background: var(--deep);
+  flex-direction: column;
+}
+.home-topbar {
+  padding: 52px 24px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.home-greeting { display: flex; flex-direction: column; }
+.home-greeting small {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.3px;
+}
+.home-greeting strong {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.2px;
+}
+.avatar {
+  width: 44px; height: 44px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--mint), #00756A);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 600;
+  color: var(--deep);
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid rgba(0,201,167,0.3);
+}
+.scan-card {
+  margin: 24px 20px 0;
+  background: linear-gradient(135deg, var(--mint-dark) 0%, #006B5C 100%);
+  border-radius: 24px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.scan-card:hover { transform: scale(1.01); }
+.scan-card::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.07);
+}
+.scan-card::after {
+  content: '';
+  position: absolute;
+  bottom: -20px; right: 60px;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+.scan-card-label {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.scan-card-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  position: relative; z-index: 1;
+}
+.scan-card-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  position: relative; z-index: 1;
+}
+.scan-card-btn {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.15);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px; font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+  position: relative; z-index: 1;
+}
+.scan-card-btn:hover { background: rgba(255,255,255,0.22); }
+.scan-card-icon {
+  position: absolute;
+  right: 24px; bottom: 20px;
+  font-size: 56px;
+  opacity: 0.25;
+  z-index: 0;
+}
+.section-title {
+  padding: 24px 24px 12px;
+  font-family: 'Sora', sans-serif;
+  font-size: 16px; font-weight: 600;
+  color: var(--white);
+  letter-spacing: -0.2px;
+}
+.risk-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 0 20px;
+}
+.risk-tile {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  padding: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.risk-tile:hover { border-color: var(--mint); background: rgba(0,201,167,0.05); }
+.risk-tile-top {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 12px;
+}
+.risk-tile-icon { font-size: 22px; }
+.risk-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+}
+.risk-badge.low { background: rgba(0,201,167,0.15); color: var(--mint); }
+.risk-badge.medium { background: rgba(255,181,71,0.15); color: var(--gold); }
+.risk-badge.high { background: rgba(255,107,107,0.15); color: var(--warn); }
+.risk-tile-name {
+  font-size: 13px; font-weight: 500;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.risk-bar-wrap { height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; overflow: hidden; }
+.risk-bar { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+.risk-val { margin-top: 5px; font-size: 11px; color: var(--muted); }
+
+/* ─── NAVBAR ─── */
+.navbar {
+  margin-top: auto;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  background: rgba(13,31,45,0.95);
+  backdrop-filter: blur(10px);
+  padding: 12px 8px 28px;
+  display: flex;
+  justify-content: space-around;
+  position: sticky; bottom: 0; left: 0; right: 0;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.nav-item {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 4px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none; background: none;
+}
+.nav-item .nav-icon { font-size: 22px; }
+.nav-item .nav-label { font-size: 10px; color: var(--muted); font-weight: 500; letter-spacing: 0.3px; }
+.nav-item.active { background: rgba(0,201,167,0.1); }
+.nav-item.active .nav-label { color: var(--mint); }
+
+/* ─── PROFILE / SETTINGS ─── */
+#profile {
+  background: var(--deep);
+  flex-direction: column;
+  overflow-y: auto;
+}
+.profile-header {
+  padding: 52px 24px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(0,201,167,0.08) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.profile-avatar {
+  width: 80px; height: 80px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--mint), #006B5C);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; font-weight: 600; color: var(--deep);
+  margin: 0 auto 16px;
+  border: 3px solid rgba(0,201,167,0.25);
+}
+.profile-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--white);
+}
+.profile-email { font-size: 13px; color: var(--muted); margin-top: 4px; }
+.profile-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 12px;
+  background: rgba(255,181,71,0.12);
+  border: 1px solid rgba(255,181,71,0.25);
+  color: var(--gold);
+  font-size: 12px; font-weight: 500;
+  padding: 5px 14px;
+  border-radius: 20px;
+}
+.settings-section {
+  padding: 20px 20px 0;
+}
+.settings-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+  padding: 0 4px;
+  margin-bottom: 8px;
+}
+.settings-group {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.settings-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.settings-item:last-child { border-bottom: none; }
+.settings-item:hover { background: rgba(255,255,255,0.03); }
+.settings-item-icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.settings-item-text { flex: 1; }
+.settings-item-text strong { display: block; font-size: 14px; font-weight: 500; color: var(--white); }
+.settings-item-text small { font-size: 12px; color: var(--muted); }
+.settings-item-arrow { color: var(--muted); font-size: 14px; }
+.toggle-wrap {
+  width: 44px; height: 26px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 13px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.toggle-wrap.on { background: var(--mint); }
+.toggle-knob {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 20px; height: 20px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.toggle-wrap.on .toggle-knob { transform: translateX(18px); }
+
+/* ─── FORGOT PASSWORD ─── */
+.success-state {
+  display: flex; flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0;
+}
+.success-icon {
+  width: 72px; height: 72px;
+  background: rgba(0,201,167,0.1);
+  border: 2px solid rgba(0,201,167,0.3);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.success-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+.success-sub { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+/* ─── ALERT / TOAST ─── */
+.toast {
+  position: absolute;
+  top: 64px; left: 20px; right: 20px;
+  background: rgba(0,201,167,0.15);
+  border: 1px solid rgba(0,201,167,0.3);
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: var(--mint);
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { background: rgba(255,107,107,0.12); border-color: rgba(255,107,107,0.3); color: var(--warn); }
+
+/* ─── LOGOUT MODAL ─── */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 500;
+  padding-bottom: 0;
+}
+.modal-overlay.show { display: flex; }
+.modal-sheet {
+  background: var(--slate);
+  border-radius: 24px 24px 0 0;
+  padding: 28px 24px 40px;
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.modal-handle {
+  width: 40px; height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  margin: 0 auto 24px;
+}
+.modal-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+}
+.modal-sub { font-size: 14px; color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+.modal-actions { display: flex; flex-direction: column; gap: 10px; }
+
+/* ─── SCAN SCREEN ─── */
+#scan {
+  background: #000;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.scan-viewfinder {
+  flex: 1;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0e12;
+}
+.scan-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 200px 160px at 50% 48%, transparent 60%, rgba(0,0,0,0.7) 100%);
+}
+.scan-frame {
+  width: 220px; height: 160px;
+  position: relative;
+}
+.scan-corner {
+  position: absolute;
+  width: 28px; height: 28px;
+  border-color: var(--mint);
+  border-style: solid;
+  border-width: 0;
+}
+.scan-corner.tl { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; border-radius: 4px 0 0 0; }
+.scan-corner.tr { top: 0; right: 0; border-top-width: 3px; border-right-width: 3px; border-radius: 0 4px 0 0; }
+.scan-corner.bl { bottom: 0; left: 0; border-bottom-width: 3px; border-left-width: 3px; border-radius: 0 0 0 4px; }
+.scan-corner.br { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; border-radius: 0 0 4px 0; }
+.scan-line {
+  position: absolute;
+  left: 6px; right: 6px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--mint), transparent);
+  animation: scanLine 2s ease-in-out infinite;
+  border-radius: 1px;
+}
+@keyframes scanLine {
+  0% { top: 10%; opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { top: 90%; opacity: 0; }
+}
+.scan-nail-emoji {
+  font-size: 52px;
+  filter: brightness(0.6);
+  position: relative; z-index: 1;
+}
+.scan-status {
+  position: absolute;
+  bottom: 20px;
+  left: 0; right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.scan-status-chip {
+  background: rgba(0,201,167,0.15);
+  border: 1px solid rgba(0,201,167,0.3);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 12px; color: var(--mint);
+  font-weight: 500;
+  display: flex; align-items: center; gap: 6px;
+}
+.scan-status-dot { width: 6px; height: 6px; border-radius: 3px; background: var(--mint); animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.scan-controls {
+  padding: 20px 24px 40px;
+  width: 100%;
+  background: var(--deep);
+}
+.scan-fingers {
+  display: flex; gap: 8px; justify-content: center;
+  margin-bottom: 20px;
+}
+.finger-btn {
+  width: 44px; height: 44px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--muted);
+  font-size: 12px; font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.finger-btn.active {
+  background: rgba(0,201,167,0.15);
+  border-color: var(--mint);
+  color: var(--mint);
+}
+
+/* ─── STEP INDICATOR ─── */
+.steps {
+  display: flex; gap: 8px; align-items: center;
+  padding: 0 28px;
+  margin-bottom: 20px;
+}
+.step-dot {
+  height: 4px; flex: 1;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  transition: background 0.3s;
+}
+.step-dot.done { background: var(--mint); }
+.step-dot.active { background: rgba(0,201,167,0.5); }
+
+/* ─── ANIMATIONS ─── */
+.screen { animation: fadeIn 0.25s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.pw-strength {
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+.pw-strength-bar {
+  height: 100%;
+  border-radius: 2px;
+  transition: all 0.3s;
+  width: 0%;
+}
+.pw-strength-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* ─── AI CHATBOT ─── */
+#chatbot {
+  background: var(--deep);
+  flex-direction: column;
+  height: 100%;
+}
+.chat-header {
+  padding: 52px 20px 14px;
+  background: var(--deep);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.chat-header-avatar {
+  width: 42px; height: 42px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--mint), #005A4E);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 16px rgba(0,201,167,0.3);
+  position: relative;
+}
+.chat-header-online {
+  position: absolute;
+  bottom: -2px; right: -2px;
+  width: 11px; height: 11px;
+  background: #00C9A7;
+  border-radius: 50%;
+  border: 2px solid var(--deep);
+}
+.chat-header-info { flex: 1; }
+.chat-header-name {
+  font-family: 'Sora', sans-serif;
+  font-size: 15px; font-weight: 600;
+  color: var(--white);
+}
+.chat-header-status {
+  font-size: 11px; color: var(--mint);
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 2px;
+}
+.chat-header-status::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  display: inline-block;
+  animation: blink 1.5s infinite;
+}
+.chat-clear-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 7px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chat-clear-btn:hover { color: var(--warn); border-color: rgba(255,107,107,0.3); }
+
+/* Context banner */
+.chat-context-bar {
+  margin: 10px 16px 0;
+  background: rgba(0,201,167,0.07);
+  border: 1px solid rgba(0,201,167,0.18);
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.chat-context-icon { font-size: 16px; }
+.chat-context-text { font-size: 11px; color: var(--mint); line-height: 1.4; }
+
+/* Messages area */
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 16px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+}
+.chat-messages::-webkit-scrollbar { display: none; }
+
+/* Message bubbles */
+.msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+.msg-row.user { flex-direction: row-reverse; }
+.msg-avatar {
+  width: 28px; height: 28px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--mint), #005A4E);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.msg-bubble {
+  max-width: 78%;
+  padding: 11px 14px;
+  border-radius: 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  position: relative;
+}
+.msg-bubble.ai {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--white);
+  border-bottom-left-radius: 4px;
+}
+.msg-bubble.user {
+  background: var(--mint);
+  color: var(--deep);
+  font-weight: 500;
+  border-bottom-right-radius: 4px;
+}
+.msg-time {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+  text-align: center;
+  display: block;
+}
+
+/* Typing indicator */
+.typing-row { display: flex; align-items: flex-end; gap: 8px; }
+.typing-bubble {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  border-bottom-left-radius: 4px;
+  padding: 14px 18px;
+  display: flex; gap: 5px; align-items: center;
+}
+.typing-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--muted);
+  animation: typingBounce 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+  30% { transform: translateY(-6px); opacity: 1; }
+}
+
+/* Quick suggestions */
+.chat-suggestions {
+  padding: 8px 16px 4px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.chat-suggestions::-webkit-scrollbar { display: none; }
+.suggestion-chip {
+  white-space: nowrap;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 7px 14px;
+  font-size: 12px;
+  color: var(--muted2);
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.suggestion-chip:hover {
+  border-color: var(--mint);
+  color: var(--mint);
+  background: rgba(0,201,167,0.07);
+}
+
+/* Input bar */
+.chat-input-bar {
+  padding: 10px 14px 36px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: var(--deep);
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.chat-input-wrap {
+  flex: 1;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px 14px;
+  gap: 8px;
+  transition: border-color 0.2s;
+}
+.chat-input-wrap:focus-within {
+  border-color: rgba(0,201,167,0.4);
+  background: rgba(0,201,167,0.04);
+}
+.chat-input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  resize: none;
+  max-height: 100px;
+  overflow-y: auto;
+  line-height: 1.4;
+}
+.chat-input::placeholder { color: rgba(255,255,255,0.25); }
+.chat-input::-webkit-scrollbar { display: none; }
+.chat-send-btn {
+  width: 42px; height: 42px;
+  border-radius: 14px;
+  background: var(--mint);
+  border: none;
+  color: var(--deep);
+  font-size: 17px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+.chat-send-btn:hover { background: var(--mint-dark); transform: scale(1.05); }
+.chat-send-btn:disabled { background: rgba(255,255,255,0.1); color: var(--muted); cursor: not-allowed; transform: none; }
+
+/* Health card in chat */
+.chat-health-card {
+  background: rgba(0,201,167,0.07);
+  border: 1px solid rgba(0,201,167,0.2);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.chat-health-card-title {
+  font-weight: 600;
+  color: var(--mint);
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+.chat-health-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  color: var(--muted2);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.chat-health-row:last-child { border-bottom: none; }
+.chat-health-val { color: var(--white); font-weight: 500; }
+
+/* Disclaimer */
+.chat-disclaimer {
+  font-size: 10px;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  padding: 4px 20px 0;
+  flex-shrink: 0;
+}
+
+/* Streaming cursor */
+.stream-cursor {
+  display: inline-block;
+  width: 2px; height: 13px;
+  background: var(--mint);
+  margin-left: 2px;
+  vertical-align: middle;
+  animation: cursorBlink 0.7s step-end infinite;
+}
+@keyframes cursorBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+</style>
+</head>
+<body>
+
+<div class="phone" id="app">
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- LOGOUT MODAL -->
+  <div class="modal-overlay" id="logoutModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Log out?</div>
+      <div class="modal-sub">You'll need to sign in again to access your nail health data and scan history.</div>
+      <div class="modal-actions">
+        <button class="btn btn-danger" onclick="confirmLogout()">Log out</button>
+        <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       1. SPLASH SCREEN
+  ══════════════════════════════════ -->
+  <div class="screen active" id="splash">
+    <div class="splash-bg"></div>
+    <div class="splash-ring">
+      <div class="splash-icon">💅</div>
+    </div>
+    <div class="splash-logo">Nail<span>Vital</span> AI</div>
+    <div class="splash-tagline">Your nails reveal your hidden health</div>
+    <div class="splash-loader"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       2. GETTING STARTED (3 slides)
+  ══════════════════════════════════ -->
+  <div class="screen" id="getting">
+    <div class="get-hero">
+      <div class="get-illustration">
+        <div class="get-orb get-orb-1"></div>
+        <div class="get-orb get-orb-2"></div>
+        <div class="get-nail" id="getEmoji">🔬</div>
+      </div>
+      <div class="get-dots">
+        <div class="get-dot active" id="dot0"></div>
+        <div class="get-dot" id="dot1"></div>
+        <div class="get-dot" id="dot2"></div>
+      </div>
+      <h2 class="get-slide-title" id="getTitle">Scan in 10 seconds</h2>
+      <p class="get-slide-sub" id="getSub">Point your camera at your nails. Our AI analyses colour, ridges, texture, and shape instantly — no hardware needed.</p>
+    </div>
+    <div class="get-actions">
+      <button class="btn btn-primary" id="getNextBtn" onclick="nextSlide()">Next →</button>
+      <div class="get-skip" onclick="showScreen('login')">Skip for now</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       3. LOGIN
+  ══════════════════════════════════ -->
+  <div class="screen auth-screen" id="login">
+    <div class="auth-header">
+      <button class="back-btn" onclick="showScreen('getting')">←</button>
+      <h1 class="auth-title">Welcome back 👋</h1>
+      <p class="auth-sub">Sign in to continue tracking your nail health journey.</p>
+    </div>
+    <div class="auth-body">
+      <div class="field" id="loginEmailField">
+        <label>Email address</label>
+        <div class="field-wrap">
+          <input type="email" id="loginEmail" placeholder="you@email.com" oninput="clearError('loginEmailField')">
+        </div>
+        <div class="field-error">Please enter a valid email address.</div>
+      </div>
+      <div class="field" id="loginPassField">
+        <label>Password</label>
+        <div class="field-wrap">
+          <input type="password" id="loginPass" placeholder="••••••••" oninput="clearError('loginPassField')">
+          <span class="field-icon" onclick="togglePw('loginPass', this)">👁</span>
+        </div>
+        <div class="field-error">Password must be at least 6 characters.</div>
+      </div>
+      <div style="text-align:right">
+        <span class="link" onclick="showScreen('forgot')" style="font-size:13px">Forgot password?</span>
+      </div>
+    </div>
+    <div class="auth-footer">
+      <button class="btn btn-primary" onclick="doLogin()">Sign In</button>
+      <div class="divider">or continue with</div>
+      <div class="social-row">
+        <div class="social-btn" onclick="socialLogin('Google')">🇬</div>
+        <div class="social-btn" onclick="socialLogin('Apple')">🍎</div>
+        <div class="social-btn" onclick="socialLogin('Phone')">📱</div>
+      </div>
+      <div class="link-row">
+        Don't have an account? <span class="link" onclick="showScreen('register')">Sign up</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       4. REGISTER
+  ══════════════════════════════════ -->
+  <div class="screen auth-screen" id="register">
+    <div class="auth-header">
+      <button class="back-btn" onclick="showScreen('login')">←</button>
+      <h1 class="auth-title">Create account</h1>
+      <p class="auth-sub">Start your personalised nail health journey today.</p>
+    </div>
+    <div class="auth-body" style="gap:14px;">
+      <div class="steps">
+        <div class="step-dot done" id="rs0"></div>
+        <div class="step-dot" id="rs1"></div>
+        <div class="step-dot" id="rs2"></div>
+      </div>
+      <div class="field" id="regNameField">
+        <label>Full name</label>
+        <div class="field-wrap">
+          <input type="text" id="regName" placeholder="Priya Sharma" oninput="clearError('regNameField')">
+        </div>
+        <div class="field-error">Please enter your name.</div>
+      </div>
+      <div class="field" id="regEmailField">
+        <label>Email address</label>
+        <div class="field-wrap">
+          <input type="email" id="regEmail" placeholder="you@email.com" oninput="clearError('regEmailField')">
+        </div>
+        <div class="field-error">Please enter a valid email.</div>
+      </div>
+      <div class="field" id="regPhoneField">
+        <label>Phone number</label>
+        <div class="field-wrap">
+          <input type="tel" id="regPhone" placeholder="+91 98765 43210" oninput="clearError('regPhoneField')">
+        </div>
+        <div class="field-error">Please enter a valid phone number.</div>
+      </div>
+      <div class="field" id="regPassField">
+        <label>Password</label>
+        <div class="field-wrap">
+          <input type="password" id="regPass" placeholder="Min. 8 characters" oninput="checkPwStrength(this.value)">
+          <span class="field-icon" onclick="togglePw('regPass', this)">👁</span>
+        </div>
+        <div class="pw-strength"><div class="pw-strength-bar" id="pwBar"></div></div>
+        <div class="pw-strength-label" id="pwLabel">Enter a password</div>
+        <div class="field-error">Password must be at least 8 characters.</div>
+      </div>
+    </div>
+    <div class="auth-footer">
+      <button class="btn btn-primary" onclick="doRegister()">Create Account</button>
+      <div class="link-row" style="font-size:12px; color:var(--muted)">
+        By continuing you agree to our <span class="link">Terms</span> & <span class="link">Privacy Policy</span>
+      </div>
+      <div class="link-row">
+        Already have an account? <span class="link" onclick="showScreen('login')">Sign in</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       5. OTP VERIFICATION
+  ══════════════════════════════════ -->
+  <div class="screen auth-screen" id="otp">
+    <div class="auth-header">
+      <button class="back-btn" onclick="showScreen('register')">←</button>
+      <h1 class="auth-title">Verify your number</h1>
+      <p class="auth-sub">We sent a 6-digit OTP to <strong style="color:var(--white)" id="otpPhone">+91 98765 43210</strong></p>
+    </div>
+    <div class="auth-body">
+      <div style="margin-top:12px;">
+        <div class="otp-row">
+          <input type="tel" maxlength="1" class="otp-input" id="o1" oninput="otpInput(this,'o2')" onkeydown="otpBack(event,this,'')">
+          <input type="tel" maxlength="1" class="otp-input" id="o2" oninput="otpInput(this,'o3')" onkeydown="otpBack(event,this,'o1')">
+          <input type="tel" maxlength="1" class="otp-input" id="o3" oninput="otpInput(this,'o4')" onkeydown="otpBack(event,this,'o2')">
+          <input type="tel" maxlength="1" class="otp-input" id="o4" oninput="otpInput(this,'o5')" onkeydown="otpBack(event,this,'o3')">
+          <input type="tel" maxlength="1" class="otp-input" id="o5" oninput="otpInput(this,'o6')" onkeydown="otpBack(event,this,'o4')">
+          <input type="tel" maxlength="1" class="otp-input" id="o6" oninput="otpInput(this,'')"  onkeydown="otpBack(event,this,'o5')">
+        </div>
+        <div class="resend-row" style="margin-top:20px;">
+          Didn't receive it? <span class="resend-timer" id="resendTimer">Resend in 30s</span>
+        </div>
+      </div>
+    </div>
+    <div class="auth-footer">
+      <button class="btn btn-primary" onclick="verifyOtp()">Verify & Continue</button>
+      <div class="link-row" style="font-size:12px;">Entered wrong number? <span class="link" onclick="showScreen('register')">Go back</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       6. FORGOT PASSWORD
+  ══════════════════════════════════ -->
+  <div class="screen auth-screen" id="forgot">
+    <div class="auth-header">
+      <button class="back-btn" onclick="showScreen('login')">←</button>
+      <h1 class="auth-title">Forgot password?</h1>
+      <p class="auth-sub">No worries. Enter your email and we'll send you a reset link.</p>
+    </div>
+    <div class="auth-body" id="forgotForm">
+      <div class="field" id="forgotEmailField">
+        <label>Email address</label>
+        <div class="field-wrap">
+          <input type="email" id="forgotEmail" placeholder="you@email.com" oninput="clearError('forgotEmailField')">
+        </div>
+        <div class="field-error">Please enter a valid email address.</div>
+      </div>
+    </div>
+    <div id="forgotSuccess" style="display:none; padding: 32px 28px;">
+      <div class="success-state">
+        <div class="success-icon">✉️</div>
+        <div class="success-title">Check your inbox</div>
+        <p class="success-sub">We've sent a password reset link to <strong style="color:var(--white)" id="forgotSentEmail"></strong>. It expires in 15 minutes.</p>
+      </div>
+    </div>
+    <div class="auth-footer" id="forgotFooter">
+      <button class="btn btn-primary" onclick="sendReset()">Send Reset Link</button>
+      <div class="link-row">Remember it? <span class="link" onclick="showScreen('login')">Sign in</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       7. RESET PASSWORD
+  ══════════════════════════════════ -->
+  <div class="screen auth-screen" id="resetpw">
+    <div class="auth-header">
+      <button class="back-btn" onclick="showScreen('forgot')">←</button>
+      <h1 class="auth-title">New password</h1>
+      <p class="auth-sub">Choose a strong password you haven't used before.</p>
+    </div>
+    <div class="auth-body">
+      <div class="field" id="newPassField">
+        <label>New password</label>
+        <div class="field-wrap">
+          <input type="password" id="newPass" placeholder="Min. 8 characters" oninput="checkPwStrength(this.value, 'pwBar2', 'pwLabel2')">
+          <span class="field-icon" onclick="togglePw('newPass',this)">👁</span>
+        </div>
+        <div class="pw-strength"><div class="pw-strength-bar" id="pwBar2"></div></div>
+        <div class="pw-strength-label" id="pwLabel2">Enter a new password</div>
+        <div class="field-error">Password must be at least 8 characters.</div>
+      </div>
+      <div class="field" id="confirmPassField">
+        <label>Confirm password</label>
+        <div class="field-wrap">
+          <input type="password" id="confirmPass" placeholder="Re-enter password">
+          <span class="field-icon" onclick="togglePw('confirmPass',this)">👁</span>
+        </div>
+        <div class="field-error">Passwords do not match.</div>
+      </div>
+    </div>
+    <div class="auth-footer" id="resetFooter">
+      <button class="btn btn-primary" onclick="doReset()">Update Password</button>
+    </div>
+    <div id="resetSuccess" style="display:none; padding: 0 28px 40px;">
+      <div class="success-state">
+        <div class="success-icon">🔐</div>
+        <div class="success-title">Password updated!</div>
+        <p class="success-sub">Your password has been changed successfully. You can now sign in with your new password.</p>
+        <button class="btn btn-primary" style="margin-top:24px; width:100%" onclick="showScreen('login')">Back to Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       8. HOME / DASHBOARD
+  ══════════════════════════════════ -->
+  <div class="screen" id="home">
+    <div class="home-topbar">
+      <div class="home-greeting">
+        <small>Good morning,</small>
+        <strong>Priya 👋</strong>
+      </div>
+      <div class="avatar" onclick="showScreen('profile')">PS</div>
+    </div>
+
+    <div class="scan-card" onclick="showScreen('scan')">
+      <div class="scan-card-label">Today's scan</div>
+      <div class="scan-card-title">Scan your nails<br>for today's report</div>
+      <div class="scan-card-sub">Last scan: Yesterday at 8:42 AM</div>
+      <button class="scan-card-btn">📸 Start scan</button>
+      <div class="scan-card-icon">💅</div>
+    </div>
+
+    <div class="section-title">Health signals</div>
+    <div class="risk-grid">
+      <div class="risk-tile">
+        <div class="risk-tile-top">
+          <div class="risk-tile-icon">🩸</div>
+          <div class="risk-badge high">High</div>
+        </div>
+        <div class="risk-tile-name">Iron deficiency</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:75%;background:#FF6B6B"></div></div>
+        <div class="risk-val">75% signal</div>
+      </div>
+      <div class="risk-tile">
+        <div class="risk-tile-top">
+          <div class="risk-tile-icon">🦋</div>
+          <div class="risk-badge medium">Medium</div>
+        </div>
+        <div class="risk-tile-name">Thyroid markers</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:42%;background:#FFB547"></div></div>
+        <div class="risk-val">42% signal</div>
+      </div>
+      <div class="risk-tile">
+        <div class="risk-tile-top">
+          <div class="risk-tile-icon">🍄</div>
+          <div class="risk-badge low">Low</div>
+        </div>
+        <div class="risk-tile-name">Fungal infection</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:10%;background:#00C9A7"></div></div>
+        <div class="risk-val">10% signal</div>
+      </div>
+      <div class="risk-tile">
+        <div class="risk-tile-top">
+          <div class="risk-tile-icon">❤️</div>
+          <div class="risk-badge low">Low</div>
+        </div>
+        <div class="risk-tile-name">Heart markers</div>
+        <div class="risk-bar-wrap"><div class="risk-bar" style="width:18%;background:#00C9A7"></div></div>
+        <div class="risk-val">18% signal</div>
+      </div>
+    </div>
+
+    <div style="height:20px;flex-shrink:0;"></div>
+
+    <div class="navbar">
+      <button class="nav-item active" onclick="showTab('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="showScreen('scan')">
+        <span class="nav-icon">📸</span>
+        <span class="nav-label">Scan</span>
+      </button>
+      <button class="nav-item" onclick="showScreen('chatbot')">
+        <span class="nav-icon">🤖</span>
+        <span class="nav-label">AI Chat</span>
+      </button>
+      <button class="nav-item" onclick="showScreen('profile')">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       9. SCAN SCREEN
+  ══════════════════════════════════ -->
+  <div class="screen" id="scan" style="background:#0a0e12">
+    <div style="padding:52px 20px 12px; display:flex; align-items:center; gap:12px; background:var(--deep);">
+      <button class="back-btn" onclick="showScreen('home')" style="flex-shrink:0">←</button>
+      <div>
+        <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--white)">Daily nail scan</div>
+        <div style="font-size:12px;color:var(--muted)">Align your nail within the guide</div>
+      </div>
+    </div>
+    <div class="scan-viewfinder">
+      <div class="scan-overlay"></div>
+      <div class="scan-frame">
+        <div class="scan-corner tl"></div>
+        <div class="scan-corner tr"></div>
+        <div class="scan-corner bl"></div>
+        <div class="scan-corner br"></div>
+        <div class="scan-line"></div>
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;">
+          <div class="scan-nail-emoji">💅</div>
+        </div>
+      </div>
+      <div class="scan-status">
+        <div class="scan-status-chip">
+          <div class="scan-status-dot"></div>
+          Good lighting detected ✓
+        </div>
+      </div>
+    </div>
+    <div class="scan-controls">
+      <div style="font-size:12px;color:var(--muted);text-align:center;margin-bottom:10px;letter-spacing:0.3px;">SELECT FINGER</div>
+      <div class="scan-fingers">
+        <button class="finger-btn active">1</button>
+        <button class="finger-btn">2</button>
+        <button class="finger-btn">3</button>
+        <button class="finger-btn">4</button>
+        <button class="finger-btn">5</button>
+        <button class="finger-btn" style="font-size:10px">All</button>
+      </div>
+      <button class="btn btn-primary" onclick="doScan()">📸 Capture & Analyse</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       10. PROFILE / SETTINGS
+  ══════════════════════════════════ -->
+  <div class="screen" id="profile">
+    <div class="profile-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <button class="back-btn" onclick="showScreen('home')" style="margin-bottom:0">←</button>
+        <div style="font-family:'Sora',sans-serif;font-size:16px;font-weight:600;color:var(--white)">Profile</div>
+        <div style="width:40px"></div>
+      </div>
+      <div class="profile-avatar">PS</div>
+      <div class="profile-name">Priya Sharma</div>
+      <div class="profile-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6313110a1a024d100b02110e0223040e020a0f4d000c0e">[email&#160;protected]</a></div>
+      <div class="profile-badge">⭐ Pro Member</div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-label">Health Profile</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(0,201,167,0.1)">👤</div>
+          <div class="settings-item-text"><strong>Personal details</strong><small>Age, gender, blood group</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(255,181,71,0.1)">🏥</div>
+          <div class="settings-item-text"><strong>Medical history</strong><small>Conditions, medications</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(255,107,107,0.1)">❤️</div>
+          <div class="settings-item-text"><strong>Family history</strong><small>Hereditary risk factors</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="settings-label">App Settings</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(0,201,167,0.1)">🔔</div>
+          <div class="settings-item-text"><strong>Daily reminders</strong><small>8:00 AM</small></div>
+          <div class="toggle-wrap on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(120,100,255,0.1)">🌐</div>
+          <div class="settings-item-text"><strong>Language</strong><small>English</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(255,181,71,0.1)">🔒</div>
+          <div class="settings-item-text"><strong>Biometric lock</strong><small>Fingerprint / Face ID</small></div>
+          <div class="toggle-wrap" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(0,201,167,0.1)">📴</div>
+          <div class="settings-item-text"><strong>Offline mode</strong><small>AI works without internet</small></div>
+          <div class="toggle-wrap on" onclick="this.classList.toggle('on')"><div class="toggle-knob"></div></div>
+        </div>
+      </div>
+
+      <div class="settings-label">Reports & Data</div>
+      <div class="settings-group">
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(0,201,167,0.1)">📄</div>
+          <div class="settings-item-text"><strong>Export PDF report</strong><small>Doctor-ready format</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-icon" style="background:rgba(255,181,71,0.1)">🗂</div>
+          <div class="settings-item-text"><strong>Download my data</strong><small>All scans & results</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+        <div class="settings-item" onclick="showScreen('deleteAccount')">
+          <div class="settings-item-icon" style="background:rgba(255,107,107,0.1)">🗑</div>
+          <div class="settings-item-text"><strong style="color:var(--warn)">Delete account</strong><small>Permanently removes all data</small></div>
+          <span class="settings-item-arrow">›</span>
+        </div>
+      </div>
+
+      <div style="padding: 0 0 16px;">
+        <button class="btn btn-danger" onclick="showLogout()">Log Out</button>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--muted);padding-bottom:40px;">NailVital AI v2.1.0 · Made with ❤️ in India</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       11. DELETE ACCOUNT
+  ══════════════════════════════════ -->
+  <div class="screen auth-screen" id="deleteAccount">
+    <div class="auth-header">
+      <button class="back-btn" onclick="showScreen('profile')">←</button>
+      <h1 class="auth-title" style="color:var(--warn)">Delete account</h1>
+      <p class="auth-sub">This action is permanent. All your scans, health data, and subscription will be removed immediately.</p>
+    </div>
+    <div class="auth-body">
+      <div style="background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);border-radius:14px;padding:18px;margin-bottom:8px;">
+        <div style="font-size:13px;color:var(--warn);font-weight:600;margin-bottom:8px;">⚠️ This will delete:</div>
+        <div style="font-size:13px;color:var(--muted);line-height:2;">• All scan history &amp; nail photos<br>• Your personalised health profile<br>• Trend graphs &amp; reports<br>• Active Pro subscription</div>
+      </div>
+      <div class="field" id="deleteConfirmField">
+        <label>Type DELETE to confirm</label>
+        <div class="field-wrap">
+          <input type="text" id="deleteConfirm" placeholder="DELETE" oninput="clearError('deleteConfirmField')">
+        </div>
+        <div class="field-error">Please type DELETE exactly.</div>
+      </div>
+      <div class="field" id="deletePassField">
+        <label>Enter your password</label>
+        <div class="field-wrap">
+          <input type="password" id="deletePass" placeholder="Your current password">
+        </div>
+        <div class="field-error">Please enter your password.</div>
+      </div>
+    </div>
+    <div class="auth-footer">
+      <button class="btn btn-danger" onclick="doDelete()">Permanently Delete Account</button>
+      <button class="btn btn-outline" onclick="showScreen('profile')">Cancel</button>
+    </div>
+  </div>
+
+</div><!-- /phone -->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── STATE ──
+let currentSlide = 0;
+const slides = [
+  { emoji: '🔬', title: 'Scan in 10 seconds', sub: 'Point your camera at your nails. Our AI analyses colour, ridges, texture, and shape instantly — no hardware needed.' },
+  { emoji: '📊', title: 'Track every change', sub: 'Beautiful 30-day trend graphs show exactly how your nail health evolves — and what\'s driving it.' },
+  { emoji: '🩺', title: 'Detect early signals', sub: 'Identify early signs of iron deficiency, thyroid issues, diabetes, and 20+ conditions before symptoms appear.' },
+];
+let otpTimer = null;
+
+// ── SCREEN NAVIGATION ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
+}
+
+function showTab(tab) {
+  showScreen(tab);
+}
+
+// ── SPLASH AUTO-ADVANCE ──
+setTimeout(() => showScreen('getting'), 2400);
+
+// ── GETTING STARTED SLIDES ──
+function nextSlide() {
+  if (currentSlide < slides.length - 1) {
+    currentSlide++;
+    updateSlide();
+  } else {
+    showScreen('login');
+  }
+}
+
+function updateSlide() {
+  const s = slides[currentSlide];
+  document.getElementById('getEmoji').textContent = s.emoji;
+  document.getElementById('getTitle').textContent = s.title;
+  document.getElementById('getSub').textContent = s.sub;
+  document.querySelectorAll('.get-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentSlide);
+  });
+  document.getElementById('getNextBtn').textContent = currentSlide === slides.length - 1 ? 'Get Started →' : 'Next →';
+}
+
+// ── TOAST ──
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (type ? ' ' + type : '');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── LOGIN ──
+function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  let ok = true;
+  if (!email || !email.includes('@')) { showError('loginEmailField'); ok = false; }
+  if (pass.length < 6) { showError('loginPassField'); ok = false; }
+  if (!ok) return;
+  toast('Signing you in…');
+  setTimeout(() => showScreen('home'), 1200);
+}
+
+function socialLogin(provider) {
+  toast(`Connecting to ${provider}…`);
+  setTimeout(() => showScreen('home'), 1400);
+}
+
+// ── REGISTER ──
+function doRegister() {
+  const name = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const pass = document.getElementById('regPass').value;
+  let ok = true;
+  if (!name) { showError('regNameField'); ok = false; }
+  if (!email || !email.includes('@')) { showError('regEmailField'); ok = false; }
+  if (phone.replace(/\D/g,'').length < 10) { showError('regPhoneField'); ok = false; }
+  if (pass.length < 8) { showError('regPassField'); ok = false; }
+  if (!ok) return;
+  document.getElementById('otpPhone').textContent = phone || '+91 98765 43210';
+  showScreen('otp');
+  startOtpTimer();
+}
+
+// ── OTP ──
+function otpInput(el, nextId) {
+  el.classList.toggle('filled', el.value.length > 0);
+  if (el.value.length === 1 && nextId) {
+    document.getElementById(nextId).focus();
+  }
+  // Auto verify when all filled
+  const all = ['o1','o2','o3','o4','o5','o6'].every(id => document.getElementById(id).value.length === 1);
+  if (all) setTimeout(verifyOtp, 400);
+}
+
+function otpBack(e, el, prevId) {
+  if (e.key === 'Backspace' && !el.value && prevId) {
+    document.getElementById(prevId).focus();
+  }
+}
+
+function verifyOtp() {
+  toast('Verifying OTP…');
+  setTimeout(() => {
+    clearInterval(otpTimer);
+    showScreen('home');
+  }, 1000);
+}
+
+function startOtpTimer() {
+  let t = 30;
+  const el = document.getElementById('resendTimer');
+  if (otpTimer) clearInterval(otpTimer);
+  otpTimer = setInterval(() => {
+    t--;
+    if (t <= 0) {
+      clearInterval(otpTimer);
+      el.innerHTML = '<span class="link" onclick="startOtpTimer()">Resend OTP</span>';
+    } else {
+      el.textContent = `Resend in ${t}s`;
+    }
+  }, 1000);
+}
+
+// ── FORGOT PASSWORD ──
+function sendReset() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email || !email.includes('@')) { showError('forgotEmailField'); return; }
+  document.getElementById('forgotSentEmail').textContent = email;
+  document.getElementById('forgotForm').style.display = 'none';
+  document.getElementById('forgotFooter').style.display = 'none';
+  document.getElementById('forgotSuccess').style.display = 'block';
+}
+
+// ── RESET PASSWORD ──
+function doReset() {
+  const np = document.getElementById('newPass').value;
+  const cp = document.getElementById('confirmPass').value;
+  if (np.length < 8) { showError('newPassField'); return; }
+  if (np !== cp) { showError('confirmPassField'); return; }
+  document.getElementById('resetFooter').style.display = 'none';
+  document.getElementById('resetpw').querySelector('.auth-header').style.display = 'none';
+  document.querySelector('#resetpw .auth-body').style.display = 'none';
+  document.getElementById('resetSuccess').style.display = 'block';
+}
+
+// ── SCAN ──
+function doScan() {
+  toast('Analysing your nails…');
+  setTimeout(() => {
+    toast('✓ Scan complete! Results updated.');
+    setTimeout(() => showScreen('home'), 800);
+  }, 2000);
+}
+
+// ── LOGOUT ──
+function showLogout() { document.getElementById('logoutModal').classList.add('show'); }
+function closeModal() { document.getElementById('logoutModal').classList.remove('show'); }
+function confirmLogout() {
+  closeModal();
+  toast('Signed out successfully.');
+  setTimeout(() => showScreen('login'), 1000);
+}
+
+// ── DELETE ACCOUNT ──
+function doDelete() {
+  const confirm = document.getElementById('deleteConfirm').value;
+  const pass = document.getElementById('deletePass').value;
+  if (confirm !== 'DELETE') { showError('deleteConfirmField'); return; }
+  if (!pass) { showError('deletePassField'); return; }
+  toast('Account deleted. Goodbye.', 'error');
+  setTimeout(() => showScreen('getting'), 1500);
+}
+
+// ── PW STRENGTH ──
+function checkPwStrength(val, barId = 'pwBar', labelId = 'pwLabel') {
+  const bar = document.getElementById(barId);
+  const label = document.getElementById(labelId);
+  let score = 0;
+  if (val.length >= 8) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    { w: '0%', c: 'transparent', l: 'Enter a password' },
+    { w: '25%', c: '#FF6B6B', l: 'Weak' },
+    { w: '50%', c: '#FFB547', l: 'Fair' },
+    { w: '75%', c: '#00C9A7', l: 'Good' },
+    { w: '100%', c: '#00C9A7', l: 'Strong ✓' },
+  ];
+  const lv = levels[score];
+  if (bar) { bar.style.width = lv.w; bar.style.background = lv.c; }
+  if (label) { label.textContent = lv.l; label.style.color = lv.c; }
+}
+
+// ── TOGGLE PASSWORD ──
+function togglePw(inputId, icon) {
+  const inp = document.getElementById(inputId);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  icon.textContent = inp.type === 'password' ? '👁' : '🙈';
+}
+
+// ── ERRORS ──
+function showError(fieldId) { document.getElementById(fieldId).classList.add('error'); }
+function clearError(fieldId) { document.getElementById(fieldId).classList.remove('error'); }
+
+// ── FINGER SELECT ──
+document.querySelectorAll('.finger-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.finger-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Navbar active state
+document.querySelectorAll('

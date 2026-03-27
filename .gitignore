@@ -13,3 +13,28 @@ ml_models/dataset/
 uploads/
 *.pdf
 diagnostic_results.txt
+
+# Android (Frontend)
+frontend/.gradle/
+frontend/build/
+frontend/local.properties
+frontend/.idea/
+frontend/*.iml
+frontend/app/build/
+frontend/.externalNativeBuild
+frontend/.cxx
+frontend/captures/
+frontend/app/google-services.json
+frontend/app/src/main/res/raw/
+frontend/app/src/main/assets/
+*.apk
+
+# Training Data
+ai_model_training/
+ml_models/
+__pycache__/
+venv/
+.env
+uploads/
+*.pdf
+diagnostic_results.txt

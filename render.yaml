@@ -2,6 +2,7 @@ services:
   - type: web
     name: nailvital-backend
     env: python
+    rootDirectory: backend
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -13,3 +14,9 @@ services:
         sync: false
       - key: DATABASE_URL
         sync: false
+
+  - type: static
+    name: nailvital-landing
+    env: static
+    buildCommand: ""
+    publishDir: landing
